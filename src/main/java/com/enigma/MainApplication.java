@@ -3,35 +3,44 @@ package com.enigma;
 import com.enigma.dao.FixedReaderDao;
 import com.enigma.impl.FixedReaderDaoImpl;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
 import java.util.Scanner;
 
 public class MainApplication {
     public static void main(String[] args) throws IOException {
-//        File inFile = null;
-//        if (0 < args.length) {
-//            inFile = new File(args[0]);
-//        } else {
-//            System.err.println("Invalid");
-//            System.exit(0);
-//        }
-//        Scanner scanner = new Scanner(inFile);
-//        System.out.println(scanner.next());
 
-        BufferedReader reader = Files.newBufferedReader(Paths.get("C:\\test-final-dkatalist\\file_inputs.txt"));
-        FixedReaderDao fixedReaderDao = new FixedReaderDaoImpl();
+        FixedReaderDaoImpl fixedReaderDao = new FixedReaderDaoImpl();
+        Scanner scanner = new Scanner(System.in);
+        if (args.length == 0) {
 
-        try {
-            fixedReaderDao.read(reader);
-        }catch (FileNotFoundException fileNotFound) {
-            fileNotFound.printStackTrace();
-        } catch (IOException io) {
-            io.printStackTrace();
+            while (true) {
+                System.out.print("$");
+                String line = scanner.nextLine();
+                if (line.equals("exit"))
+                    break;
+                fixedReaderDao.readCommand(line.trim().split("\\s+"));
+            }
+
+        } else {
+            String filePath = args[0];
+            fixedReaderDao.readFiles(filePath);
         }
+
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.println("1. Input File");
+//        System.out.println("2. Interactive");
+//        int type = scanner.nextInt();
+//
+//        switch (type) {
+//            case 1 :
+//                System.out.println("file name path : ");
+//                String file = scanner.next();
+//                System.out.println(fixedReaderDao.readFiles(file));
+//                break;
+//            case 2 :
+//                System.out.println("enter your commands : ");
+//
+//        }
+//        fixedReaderDao.readLine(filePath);
     }
 }
