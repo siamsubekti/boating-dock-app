@@ -11,21 +11,22 @@ public class BoatDaoImpl implements BoatDao {
     private Integer capacity;
     Map<Integer, Boat> pierSlots = new HashMap<>();
 
-    public BoatDaoImpl(Integer capacity){
+    public BoatDaoImpl(Integer capacity) {
         this.capacity = capacity;
     }
 
     public String createParkingBoat() {
-        for (int slot=1; slot <= this.capacity; slot++) {
+        for (int slot = 1; slot <= this.capacity; slot++) {
             pierSlots.put(slot, null);
         }
         return String.format(MessageConstant.CREATE_PIER_SLOT, this.capacity);
     }
 
     public String dock(Boat boat) {
-        if (pierSlots.containsValue(boat)){
+        if (pierSlots.containsValue(boat)) {
             return MessageConstant.PARKING_BOAT_FAIL;
-        }for (int slot=1; slot <= this.capacity; slot++){
+        }
+        for (int slot = 1; slot <= this.capacity; slot++) {
             if (pierSlots.get(slot) == null) {
                 pierSlots.put(slot, boat);
                 return String.format(MessageConstant.PARKING_BOAT_SUCCES, slot);
@@ -34,11 +35,11 @@ public class BoatDaoImpl implements BoatDao {
         return MessageConstant.PARKING_BOAT_FULL;
     }
 
-    public String leave(Boat boat) {
+    public String leave(Integer boat) {
         for (Map.Entry<Integer, Boat> slot : pierSlots.entrySet()) {
             if (slot.getValue() != null) {
-                Boat selectedBoat = slot.getValue();
-                if (boat.getLicenseNumber().equals(selectedBoat.getLicenseNumber())) {
+                Integer selectedBoat = slot.getKey();
+                if (boat.equals(selectedBoat)) {
                     pierSlots.put(slot.getKey(), null);
                     return String.format(MessageConstant.BOATING_LEAVE_SUCCES, slot.getKey());
                 }
@@ -58,15 +59,38 @@ public class BoatDaoImpl implements BoatDao {
         return builder.toString();
     }
 
-    public String search(String search) {
+    public String searchLicenseNumberByColour(String search) {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<Integer, Boat> slot : pierSlots.entrySet()) {
             if (slot.getValue() != null) {
                 if (slot.getValue().getColour().equals(search)) {
-                    return builder.append(String.format(MessageConstant.SEARCH_NUMBER_BY_COLOUR, slot.getValue().getLicenseNumber())+",").toString();
-                } else if (slot.getValue().getColour().equals(search)) {
-                    return String.format(MessageConstant.SEARCH_SLOT_BY_COLOUR, slot.getKey());
-                } else if (slot.getValue().getLicenseNumber().equals(search)) {
+                    builder.append(String.format(MessageConstant.SEARCH_NUMBER_BY_COLOUR, slot.getValue().getLicenseNumber()));
+                    builder.append(", ");
+                }
+            }
+        }
+        builder.replace(builder.lastIndexOf(", "), builder.lastIndexOf(", ")+1, "");
+        return builder.toString();
+    }
+
+    public String searchSlotPierByColour(String search) {
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<Integer, Boat> slot : pierSlots.entrySet()) {
+            if (slot.getValue() != null) {
+                if (slot.getValue().getColour().equals(search)) {
+                    builder.append(String.format(MessageConstant.SEARCH_SLOT_BY_COLOUR, slot.getKey()));
+                    builder.append(", ");
+                }
+            }
+        }
+        builder.replace(builder.lastIndexOf(", "), builder.lastIndexOf(", ")+1, "");
+        return builder.toString();
+    }
+
+    public String searchSlotPierByLicenseNumber(String search) {
+        for (Map.Entry<Integer, Boat> slot : pierSlots.entrySet()) {
+            if (slot.getValue() != null) {
+                if (slot.getValue().getLicenseNumber().equals(search)) {
                     return String.format(MessageConstant.SEARCH_SLOT_BY_NUMBER, slot.getKey());
                 }
             }

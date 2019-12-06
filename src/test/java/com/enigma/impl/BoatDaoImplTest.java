@@ -60,28 +60,31 @@ public class BoatDaoImplTest {
 
     @Test
     public void leave_should_return_num_of_available_slot() {
-        Integer expectedSlot = 1;
-        Integer expectedcapacity = 1;
-
+        Integer expectedSlot = 2;
+        Integer expectedcapacity = 2;
+        Integer actualSlot = 2;
         BoatDao boatingDockDao = new BoatDaoImpl(expectedcapacity);
         boatingDockDao.createParkingBoat();
         Boat boatOne = new Boat("KA-02II-9876", "Red");
+        Boat boatTwo = new Boat("KA-0122-9879", "White");
         String expectedStringResult = String.format(MessageConstant.BOATING_LEAVE_SUCCES, expectedSlot);
         boatingDockDao.dock(boatOne);
-        String actualStringResult = boatingDockDao.leave(boatOne);
+        boatingDockDao.dock(boatTwo);
+        String actualStringResult = boatingDockDao.leave(actualSlot);
         Assert.assertEquals(expectedStringResult, actualStringResult);
     }
 
     @Test
     public void leave_should_return_message_licenseNumber_not_found(){
         Integer expectedCapacity = 1;
+        Integer actualSlot = 2;
         BoatDao boatingDockDao = new BoatDaoImpl(expectedCapacity);
         Boat boatOne = new Boat("K 45231 Q");
         Boat boatTwo = new Boat("L 362487 H");
         String expectedStringResult = String.format(MessageConstant.NOT_FOUND);
         boatingDockDao.createParkingBoat();
         boatingDockDao.dock(boatOne);
-        String actualStringResult = boatingDockDao.leave(boatTwo);
+        String actualStringResult = boatingDockDao.leave(actualSlot);
         Assert.assertEquals(expectedStringResult, actualStringResult);
     }
 
@@ -108,30 +111,30 @@ public class BoatDaoImplTest {
         BoatDao boatingDockDao = new BoatDaoImpl(expectedCapacity);
         Boat boatOne = new Boat("KH-0182-TH", "White");
         Boat boatTwo = new Boat("HKHK-IHIS", "White");
-        Boat boatThree = new Boat("HKHK-2382", "White");
+        Boat boatThree = new Boat("HKHK-2382", "Red");
         boatingDockDao.createParkingBoat();
         boatingDockDao.dock(boatOne);
         boatingDockDao.dock(boatTwo);
         boatingDockDao.dock(boatThree);
-        String expectedStringResult = String.format(MessageConstant.SEARCH_NUMBER_BY_COLOUR, boatOne.getLicenseNumber());
-        String actualStringResult = boatingDockDao.search("White");
+        String expectedStringResult = String.format(MessageConstant.SEARCH_NUMBER_BY_COLOUR, boatOne.getLicenseNumber()+", "+boatTwo.getLicenseNumber()+" ");
+        String actualStringResult = boatingDockDao.searchLicenseNumberByColour("White");
         Assert.assertEquals(expectedStringResult, actualStringResult);
     }
 
     @Test
     public void search_should_return_get_slot_by_search_with_colour() {
-        Integer expectedSLot = 3;
+        String expectedSLot = "1, 2 ";
         Integer expectedCapacity = 3;
         BoatDao boatingDockDao = new BoatDaoImpl(expectedCapacity);
         Boat boatOne = new Boat("KH-0182-TH", "White");
         Boat boatTwo = new Boat("HKHK-IHIS", "White");
-        Boat boatThree = new Boat("HKHK-2382", "White");
+        Boat boatThree = new Boat("HKHK-2382", "Red");
         boatingDockDao.createParkingBoat();
         boatingDockDao.dock(boatOne);
         boatingDockDao.dock(boatTwo);
         boatingDockDao.dock(boatThree);
         String expectedStringResult = String.format(MessageConstant.SEARCH_SLOT_BY_COLOUR, expectedSLot);
-        String actualStringResult = boatingDockDao.search("HKHK-2382");
+        String actualStringResult = boatingDockDao.searchSlotPierByColour("White");
         Assert.assertEquals(expectedStringResult, actualStringResult);
     }
 
@@ -148,7 +151,7 @@ public class BoatDaoImplTest {
         boatingDockDao.dock(boatTwo);
         boatingDockDao.dock(boatThree);
         String expectedStringResult = String.format(MessageConstant.SEARCH_SLOT_BY_NUMBER, expectedSLot);
-        String actualStringResult = boatingDockDao.search("KH-0182-TH");
+        String actualStringResult = boatingDockDao.searchSlotPierByLicenseNumber("KH-0182-TH");
         Assert.assertEquals(expectedStringResult, actualStringResult);
     }
 }

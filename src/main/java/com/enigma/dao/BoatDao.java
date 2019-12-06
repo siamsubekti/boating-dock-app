@@ -7,9 +7,13 @@ public interface BoatDao {
 
     public String dock(Boat boat);
 
-    public String leave(Boat slots);
+    public String leave(Integer slots);
 
     public String status();
 
-    public String search(String boat);
+    public String searchLicenseNumberByColour(String search);
+
+    public String searchSlotPierByColour(String search);
+
+    public String searchSlotPierByLicenseNumber(String search);
 }

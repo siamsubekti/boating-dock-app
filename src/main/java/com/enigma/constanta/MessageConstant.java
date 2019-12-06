@@ -10,6 +10,6 @@ public class MessageConstant {
     public static final String HEADER_STATUS = "Pier No.\tRegistration No\t\tColour \n";
     public static final String RECORD_STATUS = "%d \t\t %s \t\t %s \n";
     public static final String SEARCH_NUMBER_BY_COLOUR = "%s";
-    public static final String SEARCH_SLOT_BY_COLOUR = "%d";
-    public static final String SEARCH_SLOT_BY_NUMBER = "%d";
+    public static final String SEARCH_SLOT_BY_COLOUR = "%s";
+    public static final String SEARCH_SLOT_BY_NUMBER = "%s";
 }
