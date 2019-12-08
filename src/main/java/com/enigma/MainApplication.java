@@ -25,22 +25,5 @@ public class MainApplication {
             String filePath = args[0];
             fixedReaderDao.readFiles(filePath);
         }
-
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println("1. Input File");
-//        System.out.println("2. Interactive");
-//        int type = scanner.nextInt();
-//
-//        switch (type) {
-//            case 1 :
-//                System.out.println("file name path : ");
-//                String file = scanner.next();
-//                System.out.println(fixedReaderDao.readFiles(file));
-//                break;
-//            case 2 :
-//                System.out.println("enter your commands : ");
-//
-//        }
-//        fixedReaderDao.readLine(filePath);
     }
 }
